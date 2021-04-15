@@ -1,25 +1,73 @@
+import java.io.IOException;
 import java.util.Scanner;
+
 public class cifrado {
 
-    public static void main(String[] args) {
+    public static void main(String[] args)throws IOException {
         Scanner sc = new Scanner(System.in);
-        for (int i = 0; i < 4; i++) {
+        String texto;
+        int codigo;
+        char opcion;
+        do {
+            System.out.print("Introduce un texto: ");
+            texto = sc.nextLine();
+        } while (texto.isEmpty());
 
-            System.out.println("Introduce un texto");
-            String texto = sc.nextLine();
-            System.out.println("Presione 1 para cifrar, o 2 para descifrar");
-            Integer eleccion = sc.nextInt();
-            switch (eleccion) {
-                case 1:
-                opscifrado.cifrar();
-                    break;
-                case 2:
-                opscifrado.descifrar();
-                    break;
-                default:
-                    System.out.println("Por favor introduce datos válidos");
-                    break;
-            }
+        do {
+            System.out.print("Introduce el código: ");
+            codigo = sc.nextInt();
+        } while (codigo < 1);
+        //Introducir la operación a realizar: cifrar o descifrar
+        do {
+            sc.nextLine();
+            System.out.print("(C) cifrar o (D) descifrar?: ");
+            opcion = (char) System.in.read();
+        } while (Character.toUpperCase(opcion) != 'C' && Character.toUpperCase(opcion) != 'D');
+        if (Character.toUpperCase(opcion) == 'C') {
+            System.out.println("Texto cifrado: " + cifrar(texto, codigo));
+        } else {
+            System.out.println("Texto descifrado: " + descifrar(texto, codigo));
         }
     }
-}
+
+    //método para cifrar el texto
+    public static String cifrar(String texto, int codigo) {
+        StringBuilder cifrado = new StringBuilder();
+        codigo = codigo % 26;
+        for (int i = 0; i < texto.length(); i++) {
+            if (texto.charAt(i) >= 'a' && texto.charAt(i) <= 'z') {
+                if ((texto.charAt(i) + codigo) > 'z') {
+                    cifrado.append((char) (texto.charAt(i) + codigo - 26));
+                } else {
+                    cifrado.append((char) (texto.charAt(i) + codigo));
+                }
+            } else if (texto.charAt(i) >= 'A' && texto.charAt(i) <= 'Z') {
+                if ((texto.charAt(i) + codigo) > 'Z') {
+                    cifrado.append((char) (texto.charAt(i) + codigo - 26));
+                } else {
+                    cifrado.append((char) (texto.charAt(i) + codigo));
+                }
+            }
+        }
+        return cifrado.toString();
+    }
+    public static String descifrar(String texto, int codigo) {
+        StringBuilder cifrado = new StringBuilder();
+        codigo = codigo % 26;
+        for (int i = 0; i < texto.length(); i++) {
+            if (texto.charAt(i) >= 'a' && texto.charAt(i) <= 'z') {
+                if ((texto.charAt(i) - codigo) < 'a') {
+                    cifrado.append((char) (texto.charAt(i) - codigo + 26));
+                } else {
+                    cifrado.append((char) (texto.charAt(i) - codigo));
+                }
+            } else if (texto.charAt(i) >= 'A' && texto.charAt(i) <= 'Z') {
+                if ((texto.charAt(i) - codigo) < 'A') {
+                    cifrado.append((char) (texto.charAt(i) - codigo + 26));
+                } else {
+                    cifrado.append((char) (texto.charAt(i) - codigo));
+                }
+            }
+        }
+        return cifrado.toString();
+        }}
